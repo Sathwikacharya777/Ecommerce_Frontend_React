@@ -1,0 +1,109 @@
+.order-summary-page {
+  padding: 50px 20px;
+  max-width: 1200px;
+  margin: auto;
+  background: linear-gradient(to right, #ffffff, #f8f9fc);
+  box-sizing: border-box;
+  font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+}
+
+.order-summary-page h2 {
+  font-size: 32px;
+  text-align: center;
+  margin-bottom: 40px;
+  color: #2c3e50;
+}
+
+.order-summary-page p {
+  text-align: center;
+  font-size: 18px;
+  color: #555;
+  padding: 40px 0;
+}
+
+.order-table {
+  width: 100%;
+  border-collapse: collapse;
+  background-color: #fff;
+  box-shadow: 0 6px 16px rgba(0, 0, 0, 0.08);
+  border-radius: 16px;
+  overflow: hidden;
+}
+
+.order-table th,
+.order-table td {
+  padding: 16px 20px;
+  text-align: left;
+}
+
+.order-table th {
+  background-color: #2c3e50;
+  color: white;
+  font-size: 16px;
+}
+
+.order-table td {
+  font-size: 15px;
+  color: #333;
+  border-bottom: 1px solid #eee;
+}
+
+.order-table tr:last-child td {
+  border-bottom: none;
+}
+
+.order-table tr:hover {
+  background-color: #f5f7fa;
+  transition: background-color 0.3s ease;
+}
+
+.order-table ul {
+  padding-left: 16px;
+  margin: 0;
+}
+
+.order-table li {
+  list-style-type: disc;
+  font-size: 14px;
+  color: #555;
+}
+
+/* Responsive Design */
+@media (max-width: 768px) {
+  .order-table,
+  .order-table thead,
+  .order-table tbody,
+  .order-table th,
+  .order-table td,
+  .order-table tr {
+    display: block;
+    width: 100%;
+  }
+
+  .order-table thead {
+    display: none;
+  }
+
+  .order-table tr {
+    margin-bottom: 20px;
+    box-shadow: 0 4px 12px rgba(0, 0, 0, 0.07);
+    border-radius: 12px;
+    background-color: #fff;
+    padding: 16px;
+  }
+
+  .order-table td {
+    padding: 10px 0;
+    border: none;
+    text-align: right;
+    position: relative;
+  }
+
+  .order-table td::before {
+    content: attr(data-label);
+    position: absolute;
+    left: 0;
+    font-weight: bold;
+    color: #2c3e50;
+  }
+}
