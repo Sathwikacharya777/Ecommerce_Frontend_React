@@ -8,10 +8,13 @@ function OrderSummary() {
 
   return (
     <div className="order-summary-page">
-      <h2>📦 Order Summary</h2>
+      <h2>Order Summary</h2>
 
       {orders.length === 0 ? (
-        <p>No orders placed yet.</p>
+        <p className="no-orders-message">
+           Your order history is a clean slate — let's make some memories!
+        </p>
+
       ) : (
         <table className="order-table">
           <thead>

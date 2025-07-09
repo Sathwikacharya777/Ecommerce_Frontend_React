@@ -1,7 +1,9 @@
 // src/pages/Cart.jsx
 import React, { useState } from "react";
+import { useRef, useEffect } from "react";
 import { useCart } from "../context/CartContext";
 import { FaTrash } from "react-icons/fa";
+import { useNavigate } from "react-router-dom";
 import "../styles/Cart.css";
 
 function Cart() {
@@ -49,6 +51,16 @@ function Cart() {
     setShowPaymentPopup(false);
   };
 
+  const navigate = useNavigate();
+
+  const ownerInputRef = useRef(null);
+
+useEffect(() => {
+  if (showPaymentPopup && ownerInputRef.current) {
+    ownerInputRef.current.focus();
+  }
+}, [showPaymentPopup]);
+
   return (
     <div className="cart-page">
       <h2>
@@ -57,7 +69,9 @@ function Cart() {
       </h2>
 
       {cartItems.length === 0 ? (
-        <p>Your cart is empty.</p>
+        <p className="empty-cart-message">
+          Your cart’s feeling lonely. Time to show it some love!
+        </p>
       ) : (
         <>
           <div className="cart-items">
@@ -106,6 +120,7 @@ function Cart() {
                 placeholder="Owner"
                 value={name}
                 onChange={(e) => setName(e.target.value)}
+                ref={ownerInputRef}
               />
               <input
                 type="text"
@@ -114,12 +129,13 @@ function Cart() {
               />
             </div>
 
-            <input
+            <div className="form-row">
+              <input
               type="text"
               placeholder="Card Number"
-              className="full-width"
               maxLength={16}
             />
+            </div>
 
             <div className="form-row">
               <select>
@@ -169,7 +185,14 @@ function Cart() {
         <div className="confirmation-popup">
           <div className="confirmation-box">
             <h3>✅ Order Placed Successfully!</h3>
-            <button onClick={() => setShowSuccess(false)}>Done</button>
+            <button
+              onClick={() => {
+                setShowSuccess(false);
+                navigate("/orders"); // 🔁 Redirect to /orders
+              }}
+            >
+              Done
+            </button>
           </div>
         </div>
       )}

@@ -21,10 +21,10 @@ const Footer = () => {
         </div>
 
         {/* Company Info */}
-        <div className="footer-section">
+        <div className="footer-section1">
           <h3>Our Office</h3>
           <p>ShopEasy Pvt Ltd <br />Bramhavara, India - 576213</p>
-          <div className="social-icons">
+          <div className="social-iconsf">
             <a href="https://facebook.com" target="_blank" rel="noopener noreferrer"><FaFacebook /></a>
             <a href="https://instagram.com" target="_blank" rel="noopener noreferrer"><FaInstagram /></a>
             <a href="https://twitter.com" target="_blank" rel="noopener noreferrer"><FaTwitter /></a>

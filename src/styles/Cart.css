@@ -15,6 +15,30 @@
   position: relative;
 }
 
+.empty-cart-message {
+  background: linear-gradient(to right, #e0f7fa, #fff0f7);
+  border: 2px solid #00acc1;
+  color: #003c4d;
+  padding: 30px 25px;
+  border-radius: 16px;
+  text-align: center;
+  font-size: 18px;
+  font-weight: 500;
+  max-width: 600px;
+  margin: 40px auto;
+  box-shadow: 0 6px 20px rgba(255, 64, 129, 0.1);
+  font-family: 'Segoe UI', sans-serif;
+  position: relative;
+}
+
+.empty-cart-message::before {
+  content: "🛒";
+  font-size: 40px;
+  display: block;
+  margin-bottom: 15px;
+}
+
+
 .cart-badge {
   position: absolute;
   top: -8px;
@@ -88,7 +112,7 @@
 }
 
 .quantity-controls button {
-  background-color: #eae991;
+  background-color: #c13866;
   color: white;
   border: none;
   padding: 6px 14px;
@@ -100,7 +124,7 @@
 }
 
 .quantity-controls button:hover {
-  background-color: #dac367;
+  background-color: #ab1245;
 }
 
 .quantity-controls span {
@@ -156,7 +180,7 @@
 }
 
 .buy-btn {
-  background-color: #f1d54c;
+  background-color: #ff4081;
   color: white;
   border: none;
   padding: 14px 28px;
@@ -166,14 +190,13 @@
   cursor: pointer;
   transition: background-color 0.3s ease, transform 0.2s;
 
-  width: 1200px;
-  /* max-width: 400px; */
+  width: 100%;
   margin: 0 auto;
   display: block;
 }
 
 .buy-btn:hover {
-  background-color: #d4ba49;
+  background-color: #ed3c77;
   transform: scale(1.02);
 }
 
@@ -186,12 +209,24 @@
     text-align: center;
   }
 
+  .empty-cart-message {
+    padding: 24px 18px;
+    font-size: 16px;
+    border-radius: 12px;
+    margin: 20px auto;
+  }
+
+  .empty-cart-message::before {
+    font-size: 32px;
+    margin-bottom: 12px;
+  }
+
   .cart-info {
     padding: 16px 0;
   }
 
   .quantity-controls {
-    justify-content: center;
+    margin: 10px 0;
   }
 
   .cart-footer {
@@ -209,35 +244,38 @@
   position: fixed;
   top: 0;
   left: 0;
-  width: 100%;
-  height: 100%;
+  width: 100vw; /* ensure full viewport width */
+  height: 100vh;
   background: rgba(0, 0, 0, 0.5);
   display: flex;
   align-items: center;
   justify-content: center;
   z-index: 999;
+  padding: 40px 25px 0 25px; /* Gap on left/right */
+  box-sizing: border-box;
 }
 
 .payment-box {
-  background: #fff;
-  padding: 30px;
+  background: #0a0e3f;
+  padding: 24px;
   border-radius: 12px;
-  width: 90%;
-  max-width: 420px;
+  width: 100%; /* take full width of available space */
+  max-width: 420px; /* limit width on desktop */
   text-align: center;
   box-shadow: 0 8px 24px rgba(0, 0, 0, 0.2);
+  box-sizing: border-box;
 }
 
 .payment-box h2 {
   margin-bottom: 20px;
-  color: #333;
+  color: #ffffff;
 }
 
 .form-row {
   display: flex;
+  flex-wrap: wrap;
   gap: 10px;
   margin-bottom: 15px;
-  flex-wrap: wrap;
 }
 
 .payment-box input,
@@ -248,16 +286,12 @@
   border-radius: 6px;
   font-size: 14px;
   width: 100%;
-}
-
-.full-width {
-  width: 100%;
-  margin-bottom: 15px;
+  box-sizing: border-box;
 }
 
 .payment-icons {
   display: flex;
-  align-items: center;
+  justify-content: center;
   gap: 10px;
   margin-top: 10px;
 }
@@ -269,7 +303,7 @@
 
 .confirm-btn {
   width: 100%;
-  background-color: #edda30;
+  background-color: #ff4081;
   color: white;
   padding: 12px;
   font-size: 16px;
@@ -284,11 +318,12 @@
   margin-top: 10px;
   background: none;
   border: none;
-  color: #555;
+  color: #ffffff;
   font-size: 14px;
   text-decoration: underline;
   cursor: pointer;
 }
+
 
 .confirmation-popup {
   position: fixed;
@@ -304,7 +339,7 @@
 }
 
 .confirmation-box {
-  background-color: #fff;
+  background-color: #0a0e3f;
   padding: 30px 40px;
   border-radius: 12px;
   text-align: center;
@@ -314,13 +349,13 @@
 
 .confirmation-box h3 {
   font-size: 20px;
-  color: #053610;
+  color: #ffffff;
   margin-bottom: 20px;
 }
 
 .confirmation-box button {
-  background-color: #36d134;
-  color: #fff;
+  background-color: #e11d5f;
+  color: #ffffff;
   padding: 10px 20px;
   font-weight: bold;
   border: none;
@@ -330,7 +365,7 @@
 }
 
 .confirmation-box button:hover {
-  background-color: #e8f444;
+  background-color: #ff4081;
 }
 
 @keyframes fadeIn {

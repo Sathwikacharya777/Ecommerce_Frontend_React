@@ -14,6 +14,28 @@
   color: #2c3e50;
 }
 
+.no-orders-message {
+  background: linear-gradient(to right, #e0f7fa, #fff0fa);
+  border: 2px solid #00acc1;
+  color: #003c4d;
+  padding: 30px 25px;
+  border-radius: 16px;
+  text-align: center;
+  font-size: 18px;
+  font-weight: 500;
+  max-width: 600px;
+  margin: 40px auto;
+  box-shadow: 0 6px 20px rgba(0, 172, 193, 0.1);
+  font-family: 'Segoe UI', sans-serif;
+}
+
+.no-orders-message::before{
+  content: "📦";
+  font-size: 40px;
+  display: block;
+  margin-bottom: 15px;
+}
+
 .order-summary-page p {
   text-align: center;
   font-size: 18px;
@@ -37,7 +59,7 @@
 }
 
 .order-table th {
-  background-color: #2c3e50;
+  background-color: #0a0e3f;
   color: white;
   font-size: 16px;
 }
@@ -70,40 +92,31 @@
 
 /* Responsive Design */
 @media (max-width: 768px) {
-  .order-table,
-  .order-table thead,
-  .order-table tbody,
-  .order-table th,
-  .order-table td,
-  .order-table tr {
-    display: block;
-    width: 100%;
-  }
-
-  .order-table thead {
-    display: none;
-  }
-
-  .order-table tr {
-    margin-bottom: 20px;
-    box-shadow: 0 4px 12px rgba(0, 0, 0, 0.07);
+  .no-orders-message {
+    padding: 22px 16px;
+    font-size: 16px;
     border-radius: 12px;
-    background-color: #fff;
-    padding: 16px;
+    margin: 20px auto;
   }
 
+  .order-table {
+    width: 100%;
+    font-size: 13px;         /* Reduce font size */
+  }
+
+  .order-table th,
   .order-table td {
-    padding: 10px 0;
-    border: none;
-    text-align: right;
-    position: relative;
+    padding: 10px 12px;      /* Reduce cell padding */
+    font-size: 13px;
   }
 
-  .order-table td::before {
-    content: attr(data-label);
-    position: absolute;
-    left: 0;
-    font-weight: bold;
-    color: #2c3e50;
+  .order-summary-page h2 {
+    font-size: 24px;
+  }
+
+  .order-summary-page p {
+    font-size: 16px;
+    padding: 20px 0;
   }
 }
+

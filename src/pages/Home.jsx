@@ -1,55 +1,76 @@
-import React, { useState } from "react";
+import React, { useState, useReducer } from "react";
 import { Link } from "react-router-dom";
+import { useSelector } from "react-redux";
 import { useCart } from "../context/useCart";
-import products from "../data/products";
 import "../styles/Home.css";
 import "react-responsive-carousel/lib/styles/carousel.min.css";
 import { Carousel } from "react-responsive-carousel";
 
-const getCategories = () => {
-  const unique = new Set(products.map((p) => p.category));
-  return ["All", ...unique];
+// 🔽 Initial filter state
+const initialState = {
+  category: "All",
+  price: "",
+  search: "",
 };
 
-function Home() {
-  const [inputValue, setInputValue] = useState(""); 
-  const [searchTerm, setSearchTerm] = useState("");
-  const [selectedCategory, setSelectedCategory] = useState("All");
-  const [selectedPrice, setSelectedPrice] = useState(""); 
-  const categories = getCategories();
-  const { addToCart } = useCart(); 
-
-// 🔽 Filter function combining category + price
-const filteredProducts = products.filter((product) => {
-  const categoryMatch = selectedCategory === "All" || product.category === selectedCategory;
-
-  let priceMatch = true;
-  if (selectedPrice) {
-    if (selectedPrice === "10000+") {
-      priceMatch = product.price >= 10000;
-    } else {
-      const [min, max] = selectedPrice.split("-").map(Number);
-      priceMatch = product.price >= min && product.price <= max;
-    }
+// 🔽 Reducer function for filters
+function filterReducer(state, action) {
+  switch (action.type) {
+    case "SET_CATEGORY":
+      return { ...state, category: action.payload };
+    case "SET_PRICE":
+      return { ...state, price: action.payload };
+    case "SET_SEARCH":
+      return { ...state, search: action.payload };
+    default:
+      return state;
   }
+}
 
-  const searchMatch = product.name.toLowerCase().includes(searchTerm.toLowerCase());
+function Home() {
+  const { addToCart } = useCart();
+  const banners = useSelector(state => state.offers.banners);
+  const products = useSelector(state => state.product.products);
 
-  return categoryMatch && priceMatch && searchMatch;
-});
+  const [inputValue, setInputValue] = useState("");
 
+  // 🔽 useReducer for filters
+  const [filterState, dispatch] = useReducer(filterReducer, initialState);
 
-  // 🔽 Group filtered products by category for section display
+  const categories = ["All", ...new Set(products.map((p) => p.category))];
+
+  // 🔍 Apply filters
+  const filteredProducts = products.filter((product) => {
+    const categoryMatch =
+      filterState.category === "All" || product.category === filterState.category;
+
+    let priceMatch = true;
+    if (filterState.price) {
+      if (filterState.price === "10000+") {
+        priceMatch = product.price >= 10000;
+      } else {
+        const [min, max] = filterState.price.split("-").map(Number);
+        priceMatch = product.price >= min && product.price <= max;
+      }
+    }
+
+    const searchMatch = product.name
+      .toLowerCase()
+      .includes(filterState.search.toLowerCase());
+
+    return categoryMatch && priceMatch && searchMatch;
+  });
+
+  // 🔗 Group filtered products by category
   const grouped = filteredProducts.reduce((acc, product) => {
     acc[product.category] = acc[product.category] || [];
     acc[product.category].push(product);
     return acc;
   }, {});
 
-
   return (
     <>
-      {/* Offer Image Slider */}
+      {/* 🔄 Offer Image Slider */}
       <div className="offer-slider">
         <Carousel
           autoPlay
@@ -60,19 +81,16 @@ const filteredProducts = products.filter((product) => {
           interval={3000}
           transitionTime={800}
         >
-          <div>
-            <img src="/assets/banner3.png" alt="Banner 1" />
-          </div>
-          <div>
-            <img src="/assets/banner2.png" alt="Banner 2" />
-          </div>
-          <div>
-            <img src="/assets/banner1.png" alt="Banner 3" />
-          </div>
+          {banners.map((banner) => (
+            <div key={banner.id}>
+              <img src={banner.image} alt={`Banner ${banner.id}`} />
+            </div>
+          ))}
         </Carousel>
       </div>
 
       <div className="home">
+        {/* 🔎 Search */}
         <div className="search-bar">
           <input
             type="text"
@@ -82,19 +100,19 @@ const filteredProducts = products.filter((product) => {
           />
           <button
             className="search-icon"
-            onClick={() => setSearchTerm(inputValue)} // 🔍 Triggers search only on click
+            onClick={() => dispatch({ type: "SET_SEARCH", payload: inputValue })}
           >
             🔍
           </button>
         </div>
 
+        {/* 🎯 Filters */}
         <div className="filter-bar">
-          {/* Category Filter */}
           <div className="filter-group">
             <label>Filter by Category:</label>
             <select
-              value={selectedCategory}
-              onChange={(e) => setSelectedCategory(e.target.value)}
+              value={filterState.category}
+              onChange={(e) => dispatch({ type: "SET_CATEGORY", payload: e.target.value })}
             >
               {categories.map((cat) => (
                 <option key={cat}>{cat}</option>
@@ -102,12 +120,11 @@ const filteredProducts = products.filter((product) => {
             </select>
           </div>
 
-          {/* Price Filter */}
           <div className="filter-group">
             <label>Filter by Price:</label>
             <select
-              value={selectedPrice}
-              onChange={(e) => setSelectedPrice(e.target.value)}
+              value={filterState.price}
+              onChange={(e) => dispatch({ type: "SET_PRICE", payload: e.target.value })}
             >
               <option value="">All</option>
               <option value="0-999">Below ₹1000</option>
@@ -119,25 +136,19 @@ const filteredProducts = products.filter((product) => {
           </div>
         </div>
 
+        {/* 🛍️ Products */}
         {Object.entries(grouped).map(([category, items]) => (
           <div key={category}>
             <h2 className="category-title">{category}</h2>
             <div className="product-row">
-              {items
-                  .filter((product) =>
-                    product.name.toLowerCase().includes(searchTerm.toLowerCase())
-                  )
-                  .map((product) => (                  
-                <div className="product-card" key={product.id} >
+              {items.map((product) => (
+                <div className="product-card" key={product.id}>
                   <Link to={`/product/${product.id}`} className="product-card-link">
-                  <img src={product.image} alt={product.name} />
-                  <h3>{product.name}</h3>
-                  <p>₹{product.price}</p>
+                    <img src={product.image} alt={product.name} />
+                    <h3>{product.name}</h3>
+                    <p>₹{product.price}</p>
                   </Link>
                   <div className="buttons">
-                    {/* <Link to={`/product/${product.id}`} className="btn details">
-                      Details
-                    </Link> */}
                     <button
                       className="btn add-to-cart"
                       onClick={() => addToCart(product)}
